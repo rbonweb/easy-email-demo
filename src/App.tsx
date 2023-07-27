@@ -149,7 +149,6 @@ const categories: ExtensionProps['categories'] = [
 
 const pageBlock = BlockManager.getBlockByType(BasicType.PAGE)!;
 
-
 export default function Editor() {
   const [downloadFileName, setDownloadName] = useState('download.mjml');
   // const [template, setTemplate] = useState<IEmailTemplate['content']>(pageBlock.create({
@@ -223,17 +222,23 @@ export default function Editor() {
     };
   }, [template]);
 
+  const onUploadImage = async (blob: Blob) => {
+    console.log('blob', blob)
+    return 'https://placehold.co/100'
+  };
 
   if (!initialValues) return null;
 
   return (
-    <div>
+    <div style={{
+      width: '1000px',
+    }}>
       <EmailEditorProvider
         dashed={false}
         data={initialValues}
         height={'calc(100vh - 85px)'}
         // onUploadImage={services.common.uploadByQiniu}
-
+        onUploadImage={onUploadImage}
         autoComplete
         fontList={fontList}
         onSubmit={onSubmit}
@@ -265,9 +270,10 @@ export default function Editor() {
               />
 
               <StandardLayout
-                compact={!smallScene}
+                // compact={!smallScene}
+                compact={false}
                 categories={categories}
-                showSourceCode={true}
+                showSourceCode={false}
               >
                 <EmailEditor />
               </StandardLayout>
