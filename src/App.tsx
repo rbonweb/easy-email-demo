@@ -4,12 +4,12 @@ import { Button, message, PageHeader } from 'antd';
 import mjml from 'mjml-browser';
 
 import {
+  BlockAvatarWrapper,
   EmailEditor,
   EmailEditorProvider,
   IEmailTemplate,
   Stack,
 } from 'easy-email-editor';
-import 'easy-email-editor/lib/style.css';
 import 'antd/dist/antd.css';
 
 import templateData from './template.json'
@@ -22,9 +22,10 @@ import { FormApi } from 'final-form';
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
 import '@arco-themes/react-easy-email-theme-purple/css/arco.css';
-import {useWindowSize} from 'react-use'
+import { useWindowSize } from 'react-use'
 
 import './CustomBlocks';
+import { CustomBlocksType } from './CustomBlocks/constants';
 
 const fontList = [
   'Arial',
@@ -46,6 +47,44 @@ const fontList = [
 ].map(item => ({ value: item, label: item }));
 
 const categories: ExtensionProps['categories'] = [
+  {
+    label: 'Widgets',
+    active: true,
+    displayType: 'custom',
+    blocks: [
+      <BlockAvatarWrapper type={CustomBlocksType.PRODUCT_RECOMMENDATION}>
+        <div
+          style={{
+            position: 'relative',
+            border: '1px solid #ccc',
+            marginBottom: 20,
+            width: '80%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <img
+            src={
+              'https://placehold.co/100'
+            }
+            style={{
+              maxWidth: '100%',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 2,
+            }}
+          />
+        </div>
+      </BlockAvatarWrapper>,
+    ],
+  },
   {
     label: 'Content',
     active: true,
@@ -225,13 +264,13 @@ export default function Editor() {
                 }
               />
 
-          <StandardLayout
-            compact={!smallScene}
-            categories={categories}
-            showSourceCode={true}
-          >
-            <EmailEditor />
-          </StandardLayout>
+              <StandardLayout
+                compact={!smallScene}
+                categories={categories}
+                showSourceCode={true}
+              >
+                <EmailEditor />
+              </StandardLayout>
             </>
           );
         }}

@@ -1,7 +1,6 @@
-// import { MjmlToJson } from "easy-email-core";
 import { IEmailTemplate } from "easy-email-editor";
 import { Uploader } from "../urils/Uploader";
-
+import { MjmlToJson } from "easy-email-extensions";
 
 const uploader = new Uploader(async () => (''), {
   autoUpload: false,
@@ -9,9 +8,7 @@ const uploader = new Uploader(async () => (''), {
   accept: '*'
 })
 
-
 export function useImportTemplate() {
-
   const importTemplate = async () => {
     const [file] = await uploader.chooseFile();
     const reader = new FileReader();
@@ -22,7 +19,7 @@ export function useImportTemplate() {
           return;
         }
         try {
-          // const pageData = MjmlToJson(evt.target.result as any);
+          const pageData = MjmlToJson(evt.target.result as any);
           resolve([file.name, pageData]);
         } catch (error) {
           reject()
@@ -30,7 +27,6 @@ export function useImportTemplate() {
       };
       reader.readAsText(file);
     })
-
   }
 
   return { importTemplate }
