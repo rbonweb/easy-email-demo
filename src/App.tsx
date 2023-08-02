@@ -230,9 +230,7 @@ export default function Editor() {
   if (!initialValues) return null;
 
   return (
-    <div style={{
-      width: '1000px',
-    }}>
+    <div>
       <EmailEditorProvider
         dashed={false}
         data={initialValues}
@@ -270,8 +268,7 @@ export default function Editor() {
               />
 
               <StandardLayout
-                // compact={!smallScene}
-                compact={false}
+                compact={!smallScene}
                 categories={categories}
                 showSourceCode={false}
               >
