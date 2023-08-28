@@ -1,83 +1,96 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button, message, PageHeader } from 'antd';
-import mjml from 'mjml-browser';
+import React, { useState } from "react";
+
+import { BlockAvatarWrapper } from "easy-email-editor";
+import { AdvancedType } from "easy-email-core";
+
+import DBEmailEditor from "./DBEmailEditor-v1";
+
+// Exmaple, this is we can do something with bunle builder, like rollup,
+// import DBEmailEditor ,{BlockAvatarWrapper ,AdvancedType } from '@/debutify-email-editor'
+
+import templateData from "./template.json";
+
+import { CustomBlocksType } from "./CustomBlocks/constants";
+import { HelloSajjad, Panel } from "./CustomBlocks/HelloSajjadBlock";
 
 import {
-  BlockAvatarWrapper,
-  EmailEditor,
-  EmailEditorProvider,
-  IEmailTemplate,
-  Stack,
-} from 'easy-email-editor';
-import 'antd/dist/antd.css';
+  ProductRecommendation,
+  Panel as ProductRecommendationPanel,
+} from "./CustomBlocks/ProductRecommendation";
 
-import templateData from './template.json'
-import { useImportTemplate } from './hooks/useImportTemplate';
-import { useExportTemplate } from './hooks/useExportTemplate';
-import { copy } from './urils/clipboard';
-import { AdvancedType, BasicType, BlockManager, JsonToMjml } from 'easy-email-core';
-import { ExtensionProps, SimpleLayout, StandardLayout } from 'easy-email-extensions';
-import { FormApi } from 'final-form';
-import 'easy-email-editor/lib/style.css';
-import 'easy-email-extensions/lib/style.css';
-import '@arco-themes/react-easy-email-theme-purple/css/arco.css';
-import { useWindowSize } from 'react-use'
+const fontList = ["Arial", "Tahoma", "Verdana"].map((item) => ({
+  value: item,
+  label: item,
+}));
 
-import './CustomBlocks';
-import { CustomBlocksType } from './CustomBlocks/constants';
-
-const fontList = [
-  'Arial',
-  'Tahoma',
-  'Verdana',
-  'Times New Roman',
-  'Courier New',
-  'Georgia',
-  'Lato',
-  'Montserrat',
-  '黑体',
-  '仿宋',
-  '楷体',
-  '标楷体',
-  '华文仿宋',
-  '华文楷体',
-  '宋体',
-  '微软雅黑',
-].map(item => ({ value: item, label: item }));
-
-const categories: ExtensionProps['categories'] = [
+const categories = [
   {
-    label: 'Widgets',
+    label: "Widgets",
     active: true,
-    displayType: 'custom',
+    displayType: "custom",
     blocks: [
       <BlockAvatarWrapper type={CustomBlocksType.PRODUCT_RECOMMENDATION}>
         <div
           style={{
-            position: 'relative',
-            border: '1px solid #ccc',
+            position: "relative",
+            border: "1px solid #ccc",
             marginBottom: 20,
-            width: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            width: "80%",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
           <img
-            src={
-              'https://placehold.co/100'
-            }
+            src={"https://placehold.co/100"}
             style={{
-              maxWidth: '100%',
+              maxWidth: "100%",
             }}
           />
           <div
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               left: 0,
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
+              zIndex: 2,
+            }}
+          />
+        </div>
+        ,
+      </BlockAvatarWrapper>,
+    ],
+  },
+  {
+    label: "Welcom Sajjad",
+    active: true,
+    displayType: "custom",
+    blocks: [
+      <BlockAvatarWrapper type={CustomBlocksType.HELLO_SAJJAD_BLOCK}>
+        <div
+          style={{
+            position: "relative",
+            border: "1px solid #ccc",
+            marginBottom: 20,
+            width: "80%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <img
+            src={"https://placehold.co/100"}
+            style={{
+              maxWidth: "100%",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
               zIndex: 2,
             }}
           />
@@ -86,7 +99,7 @@ const categories: ExtensionProps['categories'] = [
     ],
   },
   {
-    label: 'Content',
+    label: "Content",
     active: true,
     blocks: [
       {
@@ -94,7 +107,7 @@ const categories: ExtensionProps['categories'] = [
       },
       {
         type: AdvancedType.IMAGE,
-        payload: { attributes: { padding: '0px 0px 0px 0px' } },
+        payload: { attributes: { padding: "0px 0px 0px 0px" } },
       },
       {
         type: AdvancedType.BUTTON,
@@ -116,168 +129,93 @@ const categories: ExtensionProps['categories'] = [
       },
     ],
   },
+
   {
-    label: 'Layout',
+    label: "Layout",
     active: true,
-    displayType: 'column',
+    displayType: "column",
     blocks: [
       {
-        title: '2 columns',
+        title: "2 columns",
         payload: [
-          ['50%', '50%'],
-          ['33%', '67%'],
-          ['67%', '33%'],
-          ['25%', '75%'],
-          ['75%', '25%'],
+          ["50%", "50%"],
+          ["33%", "67%"],
+          ["67%", "33%"],
+          ["25%", "75%"],
+          ["75%", "25%"],
         ],
       },
       {
-        title: '3 columns',
+        title: "3 columns",
         payload: [
-          ['33.33%', '33.33%', '33.33%'],
-          ['25%', '25%', '50%'],
-          ['50%', '25%', '25%'],
+          ["33.33%", "33.33%", "33.33%"],
+          ["25%", "25%", "50%"],
+          ["50%", "25%", "25%"],
         ],
       },
       {
-        title: '4 columns',
-        payload: [[['25%', '25%', '25%', '25%']]],
+        title: "4 columns",
+        payload: [[["25%", "25%", "25%", "25%"]]],
       },
     ],
   },
 ];
 
-const pageBlock = BlockManager.getBlockByType(BasicType.PAGE)!;
+// const pageBlock = BlockManager.getBlockByType(BasicType.PAGE)!;
+
+const customBlocks = [
+  {
+    blockType: CustomBlocksType.HELLO_SAJJAD_BLOCK,
+    block: HelloSajjad,
+    panel: Panel,
+  },
+  {
+    blockType: CustomBlocksType.PRODUCT_RECOMMENDATION,
+    block: ProductRecommendation,
+    panel: ProductRecommendationPanel,
+  },
+];
 
 export default function Editor() {
-  const [downloadFileName, setDownloadName] = useState('download.mjml');
-  // const [template, setTemplate] = useState<IEmailTemplate['content']>(pageBlock.create({
-  //   data: {
-  //     value: {
-  //       "content-background-color": '#ffffff'
-  //     }
-  //   }
-  // }));
-  const [template, setTemplate] = useState<IEmailTemplate['content']>(templateData);
-  const { importTemplate } = useImportTemplate();
-  const { exportTemplate } = useExportTemplate();
+  const [downloadFileName, setDownloadName] = useState("download.mjml");
+  const [template, setTemplate] = useState<any>(templateData);
 
-  const { width } = useWindowSize();
-
-  const smallScene = width < 1400;
-
-  const onCopyHtml = (values: IEmailTemplate) => {
-    const html = mjml(JsonToMjml({
-      data: values.content,
-      mode: 'production',
-      context: values.content
-    }), {
-      beautify: true,
-      validationLevel: 'soft',
-    }).html;
-
-    copy(html);
-    message.success('Copied to pasteboard!')
+  const handleCopyHtmlResult = (html: string) => {
+    console.log("handleCopyHtmlResult", html);
   };
 
-  const onImportMjml = async () => {
-    try {
-      const [filename, data] = await importTemplate();
-      setDownloadName(filename);
-      setTemplate(data);
-    } catch (error) {
-      message.error('Invalid mjml file');
-    }
+  const handleImportResult = (filename: string, data: any) => {
+    setDownloadName(filename);
+    setTemplate(data);
   };
 
-  const onExportMjml = (values: IEmailTemplate) => {
-    exportTemplate(
-      downloadFileName,
-      JsonToMjml({
-        data: values.content,
-        mode: 'production',
-        context: values.content
-      }))
+  const handleExportResult = (filename: string) => {};
+
+  const handleSubmitResult = (values: any) => {
+    console.log("values", values);
   };
-
-  const onSubmit = useCallback(
-    async (
-      values: IEmailTemplate,
-      form: FormApi<IEmailTemplate, Partial<IEmailTemplate>>
-    ) => {
-      console.log('values', values)
-
-      // form.restart(newValues); replace new values form backend 
-      message.success('Saved success!')
-    },
-    []
-  );
-
-
-  const initialValues: IEmailTemplate | null = useMemo(() => {
-    return {
-      subject: 'Welcome to Easy-email',
-      subTitle: 'Nice to meet you!',
-      content: template
-    };
-  }, [template]);
 
   const onUploadImage = async (blob: Blob) => {
-    console.log('blob', blob)
-    return 'https://placehold.co/100'
+    console.log("blob", blob);
+    return "https://placehold.co/100";
   };
-
-  if (!initialValues) return null;
 
   return (
     <div>
-      <EmailEditorProvider
-        dashed={false}
-        data={initialValues}
-        height={'calc(100vh - 85px)'}
-        // onUploadImage={services.common.uploadByQiniu}
-        onUploadImage={onUploadImage}
-        autoComplete
+      <DBEmailEditor
+        downloadFileName={downloadFileName}
+        setDownloadFileName={setDownloadName}
+        template={template}
+        setTemplate={setTemplate}
         fontList={fontList}
-        onSubmit={onSubmit}
-      >
-        {({ values }, { submit }) => {
-          return (
-            <>
-              <PageHeader
-                title='Edit'
-                extra={
-                  <Stack alignment="center">
-                    <Button onClick={() => onCopyHtml(values)}>
-                      Copy Html
-                    </Button>
-                    <Button onClick={() => onExportMjml(values)}>
-                      Export Template
-                    </Button>
-                    <Button onClick={onImportMjml}>
-                      import Template
-                    </Button>
-                    <Button
-                      type='primary'
-                      onClick={() => submit()}
-                    >
-                      Save
-                    </Button>
-                  </Stack>
-                }
-              />
-
-              <StandardLayout
-                compact={!smallScene}
-                categories={categories}
-                showSourceCode={false}
-              >
-                <EmailEditor />
-              </StandardLayout>
-            </>
-          );
-        }}
-      </EmailEditorProvider>
+        categories={categories}
+        onCopyHtmlResult={handleCopyHtmlResult}
+        onImportResult={handleImportResult}
+        onExportResult={handleExportResult}
+        onSubmitResult={handleSubmitResult}
+        onUploadImage={onUploadImage}
+        customBlocks={customBlocks}
+      />
     </div>
   );
 }

@@ -1,12 +1,12 @@
-import { BlockManager } from 'easy-email-core';
-import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
-import { Panel as ProductRecommendationPanel, ProductRecommendation } from './ProductRecommendation';
-import { CustomBlocksType } from './constants';
+import { BlockManager } from "easy-email-core";
+import { BlockAttributeConfigurationManager } from "easy-email-extensions";
+import { CustomBlocksType } from "./constants";
+import { HelloSajjad, Panel as HelloSajjadPanel } from "./HelloSajjadBlock";
 
 BlockManager.registerBlocks({
-  [CustomBlocksType.PRODUCT_RECOMMENDATION]: ProductRecommendation,
+  [CustomBlocksType.HELLO_SAJJAD_BLOCK]: HelloSajjad,
 });
 
 BlockAttributeConfigurationManager.add({
-  [CustomBlocksType.PRODUCT_RECOMMENDATION]: ProductRecommendationPanel,
+  [CustomBlocksType.HELLO_SAJJAD_BLOCK]: HelloSajjadPanel,
 });
