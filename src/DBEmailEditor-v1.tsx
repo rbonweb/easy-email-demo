@@ -181,7 +181,7 @@ const DBEmailEditor: React.FC<EmailEditorWrapperProps> = ({
 
             <StandardLayout
               categories={categories}
-              showSourceCode={false}
+              showSourceCode={true}
               compact={!smallScene}
             >
               <EmailEditor />
